@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <title>Quotes</title>
+    <link rel="stylesheet" type="text/css" href="../static/quotes/style.css">  
+</head>
+
+<body>
+    <h2> Welcome {{ user.first_name }}!</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+        <h3>{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
+    <a href='/logout'>Logout</a>
+
+
+    <h3>Contribute a Quote:</h3>
+    <form action='/contribute' method='POST'>
+        {% csrf_token %}
+        <p>Quoted By: <input type='text' name='author'></p>
+        <p>Message: <textarea name="message"></textarea></p>
+        ￼￼￼<input type="hidden" name="user_id" value="{{ user.id }}">
+        <p><input type='submit' value='Submit'></p>
+    </form> 
+    
+    <h3>Quotable Quotes:</h3>
+
+    <table> 
+        {% for quote in quotes %}
+        <tr>
+            <td>
+                <p><strong>{{ quote.author }}:</strong> <em>{{quote.message}}</em></p>
+                <p>Posted by <a href='/users/{{quote.posted_by.id}}'>{{ quote.posted_by.first_name }} </a>| 
+                <a href='/addToFavs/{{ quote.id }}'>Add to My List</a>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Favorites Quotes:</h3>
+    
+        <table> 
+            {% for quote in user.favorites.all %}
+            <tr>
+                <td>
+                    <p><strong>{{ quote.author }}</strong>: <em>{{quote.message}}</em></p>
+                    <p>Posted by {{ quote.posted_by.first_name  }} | 
+                <a href='/removeFromFavs/{{ quote.id }}'>Remove from My List</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+</body>
+<html>  

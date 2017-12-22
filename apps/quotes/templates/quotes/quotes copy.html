@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <title>Quotes</title>
+    <link rel="stylesheet" type="text/css" href="../static/quotes/style.css">  
+</head>
+
+<body>
+    <h2> Welcome {{ user.first_name }}!</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+        <h3>{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
+    <a href='/logout'>Logout</a>
+
+
+    <h3>Contribute a Quote:</h3>
+    <form action='/contribute' method='POST'>
+        {% csrf_token %}
+        <p>Quoted By: <input type='text' name='author_name'></p>
+        <p>Message: <textarea name="message"></textarea></p>
+        <p><input type='submit' value='Submit'></p>
+    </form> 
+    
+    <h3>Quotable Quotes:</h3>
+
+    <table>
+
+        {% for quote in quotes %}
+        <tr>
+            <td>
+                <p>{{author[0]}}: {{quote}}</p>
+                <p>Posted by {{ <a href='/show'>posted_by</a> }}</p>
+                <a href='/add_to_fav'>Add to My List</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+
+    </table>
+
+</body>
+<html>  
